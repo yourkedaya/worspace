@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>办公效率工具集</title>
+  <script src="assets/lib/tailwind.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef5ff', 100: '#d9e8ff', 200: '#bcd7ff', 300: '#8ebeff',
+              400: '#599aff', 500: '#2e76f1', 600: '#1a56db', 700: '#1543b8',
+              800: '#173994', 900: '#193374'
+            }
+          },
+          fontFamily: {
+            sans: ['"Inter"', '"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+    .card-hover { transition: all .25s ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 28px -8px rgba(46,118,241,.25); }
+    .tab-active { color: #1a56db; border-color: #1a56db; }
+    .tab-inactive { color: #6b7280; border-color: transparent; }
+    .nav-pill { transition: all .2s ease; }
+    .nav-pill.active { background:#1a56db; color:#fff; }
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+  <!-- 顶部 Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-brand-600 text-white grid place-items-center font-bold text-lg">工</div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold text-slate-900">办公效率工具集</h1>
+          <p class="text-xs text-slate-500">常用平台 · 文档模板 · 实用小工具</p>
+        </div>
+      </div>
+      <div class="hidden sm:flex items-center gap-2 text-sm text-slate-500">
+        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+        一站直达
+      </div>
+    </div>
+  </header>
+
+  <!-- Tab 导航 -->
+  <nav class="bg-white border-b border-slate-200 sticky top-[73px] z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex gap-1">
+        <button data-tab="platforms" class="tab-btn tab-active px-5 py-3 text-sm font-medium border-b-2 transition">
+          🔗 平台导航
+        </button>
+        <button data-tab="templates" class="tab-btn tab-inactive px-5 py-3 text-sm font-medium border-b-2 transition">
+          📄 WPS 模板
+        </button>
+        <button data-tab="tools" class="tab-btn tab-inactive px-5 py-3 text-sm font-medium border-b-2 transition">
+          🛠️ 小工具
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ========== 平台导航 ========== -->
+    <section id="tab-platforms" class="tab-panel">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-slate-900">常用平台直达</h2>
+        <p class="text-slate-500 mt-1">点击卡片直接跳转，收藏常用平台提升效率</p>
+      </div>
+      <div id="platform-categories" class="space-y-8"></div>
+    </section>
+
+    <!-- ========== WPS 模板 ========== -->
+    <section id="tab-templates" class="tab-panel hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-slate-900">WPS 文档模板库</h2>
+        <p class="text-slate-500 mt-1">点击卡片即可下载对应模板文件</p>
+      </div>
+      <div id="template-categories" class="space-y-8"></div>
+    </section>
+
+    <!-- ========== 小工具 ========== -->
+    <section id="tab-tools" class="tab-panel hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-slate-900">实用小工具</h2>
+        <p class="text-slate-500 mt-1">本地运行的效率工具，数据不出浏览器，安全可靠</p>
+      </div>
+      <div id="tools-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+      <div class="mt-10 p-5 rounded-xl bg-brand-50 border border-brand-100">
+        <h3 class="font-semibold text-brand-800 flex items-center gap-2">
+          <span>💡</span> 有想要的小工具？
+        </h3>
+        <p class="text-sm text-brand-700 mt-2">如果你和同事们有其他高频痛点（如批量重命名、PDF 合并、文本清洗等），可以提需求，我们会持续添加。</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-200 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-slate-400">
+      <p>办公效率工具集 · 纯前端实现 · 可一键部署至 Vercel</p>
+    </div>
+  </footer>
+
+  <script>
+    // Tab 切换
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        tabBtns.forEach(b => {
+          b.classList.remove('tab-active');
+          b.classList.add('tab-inactive');
+        });
+        btn.classList.remove('tab-inactive');
+        btn.classList.add('tab-active');
+        tabPanels.forEach(p => p.classList.add('hidden'));
+        document.getElementById('tab-' + tab).classList.remove('hidden');
+        // 切换 Tab 后滚动到内容区顶部，避免看到上一个 Tab 的残留内容
+        window.scrollTo({ top: document.querySelector('main').offsetTop - 80, behavior: 'smooth' });
+      });
+    });
+
+    // 渲染平台卡片
+    async function renderPlatforms() {
+      try {
+        const res = await fetch('config/platforms.json');
+        const data = await res.json();
+        const grouped = {};
+        data.platforms.forEach(p => {
+          if (!grouped[p.category]) grouped[p.category] = [];
+          grouped[p.category].push(p);
+        });
+        const container = document.getElementById('platform-categories');
+        container.innerHTML = Object.entries(grouped).map(([cat, list]) => `
+          <div>
+            <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">${cat}</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              ${list.map(p => `
+                <a href="${p.url}" target="_blank" rel="noopener noreferrer"
+                   class="card-hover bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3 group">
+                  <div class="w-10 h-10 rounded-lg bg-slate-100 grid place-items-center overflow-hidden flex-shrink-0">
+                    <img src="${p.icon}" alt="${p.name}" class="w-6 h-6 object-contain"
+                         onerror="this.style.display='none';this.parentElement.innerHTML='<span class=&quot;text-lg&quot;>🌐</span>'">
+                  </div>
+                  <div class="min-w-0">
+                    <div class="font-medium text-slate-900 text-sm truncate group-hover:text-brand-600">${p.name}</div>
+                    <div class="text-xs text-slate-400 truncate">${p.desc}</div>
+                  </div>
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error('平台加载失败', e);
+      }
+    }
+
+    // 渲染模板卡片
+    async function renderTemplates() {
+      try {
+        const res = await fetch('config/templates.json');
+        const data = await res.json();
+        const grouped = {};
+        data.templates.forEach(t => {
+          if (!grouped[t.category]) grouped[t.category] = [];
+          grouped[t.category].push(t);
+        });
+        const container = document.getElementById('template-categories');
+        container.innerHTML = Object.entries(grouped).map(([cat, list]) => `
+          <div>
+            <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">${cat}</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${list.map(t => `
+                <div class="card-hover bg-white rounded-xl border border-slate-200 p-5 cursor-pointer"
+                     onclick="downloadTemplate('${t.name}','${t.type}')">
+                  <div class="flex items-start justify-between mb-3">
+                    <div class="w-12 h-12 rounded-xl bg-brand-50 grid place-items-center text-2xl">${t.icon}</div>
+                    <span class="text-xs px-2 py-1 rounded-full ${t.type === 'xlsx' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'} font-mono">${t.type.toUpperCase()}</span>
+                  </div>
+                  <h4 class="font-semibold text-slate-900 mb-1">${t.name}</h4>
+                  <p class="text-sm text-slate-500 leading-relaxed">${t.desc}</p>
+                  <div class="mt-3 text-xs text-brand-600 font-medium flex items-center gap-1">
+                    点击下载 →
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error('模板加载失败', e);
+      }
+    }
+
+    // 生成并下载模板文件（演示用占位文件，实际可替换为真实文件链接）
+    function downloadTemplate(name, type) {
+      let content, mime, ext;
+      if (type === 'xlsx') {
+        // 生成一个简单的 xlsx 占位说明
+        const html = `<html><body><h2>${name}</h2><p>这是模板占位文件，请替换为真实模板。</p><p>使用方法：将真实 .xlsx 文件放入项目，并修改 config/templates.json 中的下载链接。</p></body></html>`;
+        const blob = new Blob(['\ufeff' + html], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name + '.html';
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        const html = `<html><body><h2>${name}</h2><p>这是模板占位文件，请替换为真实模板。</p><p>使用方法：将真实 .docx 文件放入项目，并修改 config/templates.json 中的下载链接。</p></body></html>`;
+        const blob = new Blob(['\ufeff' + html], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name + '.html';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+      // 实际部署时，可将上面的逻辑替换为：
+      // window.open('templates/' + encodeURIComponent(name) + '.' + type, '_blank');
+    }
+
+    // 渲染小工具
+    async function renderTools() {
+      try {
+        const res = await fetch('config/tools.json');
+        const data = await res.json();
+        const container = document.getElementById('tools-grid');
+        container.innerHTML = data.tools.map(t => `
+          <a href="${t.url}" class="card-hover bg-white rounded-xl border border-slate-200 p-5 block group relative">
+            ${t.isNew ? '<span class="absolute top-3 right-3 text-[10px] px-2 py-0.5 rounded-full bg-red-500 text-white font-bold">NEW</span>' : ''}
+            <div class="w-12 h-12 rounded-xl bg-brand-50 grid place-items-center text-2xl mb-3">${t.icon}</div>
+            <h4 class="font-semibold text-slate-900 mb-1 group-hover:text-brand-600">${t.name}</h4>
+            <p class="text-sm text-slate-500 leading-relaxed">${t.desc}</p>
+            <div class="mt-3 text-xs text-brand-600 font-medium flex items-center gap-1">
+              打开使用 →
+            </div>
+          </a>
+        `).join('');
+      } catch (e) {
+        console.error('工具加载失败', e);
+      }
+    }
+
+    // 初始化
+    renderPlatforms();
+    renderTemplates();
+    renderTools();
+  </script>
+</body>
+</html>
