@@ -1,0 +1,15 @@
+{
+  "name": "smart-workbench",
+  "version": "1.0.0",
+  "description": "智能工作台 - 平台导航、模板中心、工具箱",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "workbench",
+    "tools",
+    "productivity"
+  ],
+  "license": "MIT"
+}
