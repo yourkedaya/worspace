@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 · 智能工作台</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <!-- Admin Nav -->
+    <nav class="admin-nav">
+        <div class="admin-nav-inner">
+            <a href="index.html" class="back-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                返回工作台
+            </a>
+            <h1>管理后台</h1>
+            <div class="admin-actions">
+                <button class="btn btn-ghost" id="btnImport">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    导入 JSON
+                </button>
+                <button class="btn btn-primary" id="btnExport">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    导出 data.js
+                </button>
+                <button class="btn btn-secondary" id="btnExportJSON">
+                    导出 JSON 备份
+                </button>
+            </div>
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="platforms">平台导航</button>
+                <button class="admin-tab" data-tab="templates">模板中心</button>
+                <button class="admin-tab" data-tab="tools">工具箱</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Platforms Panel -->
+    <div class="admin-panel active" id="panel-platforms">
+        <div class="panel-header">
+            <div class="panel-info">
+                <h2>平台导航管理</h2>
+                <p>共 <span id="platformCount">0</span> 个平台 · 8 个分类</p>
+            </div>
+            <button class="btn btn-primary" id="btnAddPlatform">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                添加平台
+            </button>
+        </div>
+
+        <!-- Add/Edit Platform Form -->
+        <div class="edit-form" id="platformForm" style="display:none">
+            <h3 id="platformFormTitle">添加平台</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>平台名称 *</label>
+                    <input type="text" id="pf-name" placeholder="例如：ChatGPT" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>简短描述</label>
+                    <input type="text" id="pf-desc" placeholder="例如：AI 对话助手" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>分类 *</label>
+                    <select id="pf-cat" class="form-input">
+                        <option value="ai">AI 工具</option>
+                        <option value="office">办公协作</option>
+                        <option value="design">设计创作</option>
+                        <option value="dev">开发编程</option>
+                        <option value="ecom">电商运营</option>
+                        <option value="edu">学习教育</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>链接地址 *</label>
+                    <input type="url" id="pf-url" placeholder="https://..." class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>图标颜色</label>
+                    <input type="text" id="pf-color" placeholder="#10a37f" class="form-input color-input">
+                    <input type="color" id="pf-colorPicker" value="#10a37f" class="form-color-picker" onchange="document.getElementById('pf-color').value = this.value">
+                </div>
+                <div class="form-group">
+                    <label>图标字母（2字以内）</label>
+                    <input type="text" id="pf-letter" placeholder="C" maxlength="2" class="form-input">
+                </div>
+            </div>
+            <div class="form-actions">
+                <input type="hidden" id="pf-editIndex" value="-1">
+                <button class="btn btn-ghost" id="btnCancelPlatform">取消</button>
+                <button class="btn btn-primary" id="btnSavePlatform">保存</button>
+            </div>
+        </div>
+
+        <!-- Platform List -->
+        <div class="data-table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th width="50">图标</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th width="90">分类</th>
+                        <th>链接</th>
+                        <th width="120">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="platformTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Templates Panel -->
+    <div class="admin-panel" id="panel-templates">
+        <div class="panel-header">
+            <div class="panel-info">
+                <h2>模板中心管理</h2>
+                <p>共 <span id="templateCount">0</span> 个模板 · 7 个分类 Tab</p>
+            </div>
+            <button class="btn btn-primary" id="btnAddTemplate">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                添加模板
+            </button>
+        </div>
+
+        <div class="edit-form" id="templateForm" style="display:none">
+            <h3 id="templateFormTitle">添加模板</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>模板标题 *</label>
+                    <input type="text" id="tpl-title" placeholder="例如：商务汇报模板" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>所属分类 Tab *</label>
+                    <select id="tpl-tab" class="form-input">
+                        <option value="recommend">精选推荐</option>
+                        <option value="ppt">PPT 模板</option>
+                        <option value="word">Word 模板</option>
+                        <option value="excel">Excel 模板</option>
+                        <option value="resume">简历模板</option>
+                        <option value="ops">运营模板</option>
+                        <option value="design">设计素材</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>文件类型</label>
+                    <select id="tpl-type" class="form-input">
+                        <option value="ppt">PPT</option>
+                        <option value="word">Word</option>
+                        <option value="xlsx">Excel</option>
+                        <option value="png">PNG</option>
+                        <option value="svg">SVG</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>下载量（显示用）</label>
+                    <input type="text" id="tpl-size" placeholder="2.5k" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>评分</label>
+                    <input type="number" id="tpl-rating" placeholder="4.9" step="0.1" min="0" max="5" class="form-input">
+                </div>
+                <div class="form-group form-group-full">
+                    <label>封面标题（用 \n 换行，两行最佳）</label>
+                    <input type="text" id="tpl-cover" placeholder="商务汇报\n模板" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>渐变色 1</label>
+                    <input type="text" id="tpl-grad1" placeholder="#667eea" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>渐变色 2</label>
+                    <input type="text" id="tpl-grad2" placeholder="#764ba2" class="form-input">
+                </div>
+            </div>
+            <div class="form-actions">
+                <input type="hidden" id="tpl-editIndex" value="-1">
+                <button class="btn btn-ghost" id="btnCancelTemplate">取消</button>
+                <button class="btn btn-primary" id="btnSaveTemplate">保存</button>
+            </div>
+        </div>
+
+        <div class="template-category-groups" id="templateGroups"></div>
+    </div>
+
+    <!-- Tools Panel -->
+    <div class="admin-panel" id="panel-tools">
+        <div class="panel-header">
+            <div class="panel-info">
+                <h2>工具箱管理</h2>
+                <p>共 <span id="toolCount">0</span> 个工具 · 置顶「推荐」显示在深色卡片</p>
+            </div>
+            <button class="btn btn-primary" id="btnAddTool">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                添加工具
+            </button>
+        </div>
+
+        <div class="edit-form" id="toolForm" style="display:none">
+            <h3 id="toolFormTitle">添加工具</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>工具名称 *</label>
+                    <input type="text" id="tool-name" placeholder="例如：表格匹配器" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>简短描述</label>
+                    <input type="text" id="tool-desc" placeholder="例如：VLOOKUP 一键完成" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>图标类型</label>
+                    <select id="tool-icon" class="form-input">
+                        <option value="table">表格</option>
+                        <option value="pdf">PDF</option>
+                        <option value="image">图片</option>
+                        <option value="ocr">OCR</option>
+                        <option value="convert">转换</option>
+                        <option value="mind">思维导图</option>
+                        <option value="qr">二维码</option>
+                        <option value="write">写作</option>
+                        <option value="translate">翻译</option>
+                        <option value="url">链接</option>
+                        <option value="ip">IP</option>
+                        <option value="screenshot">截图</option>
+                        <option value="json">JSON</option>
+                        <option value="base64">编码</option>
+                        <option value="time">时间</option>
+                        <option value="color">颜色</option>
+                        <option value="md">Markdown</option>
+                        <option value="more">更多</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>渐变色 1</label>
+                    <input type="text" id="tool-grad1" placeholder="#667eea" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>渐变色 2</label>
+                    <input type="text" id="tool-grad2" placeholder="#764ba2" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="tool-featured">
+                        置顶为推荐（深色卡片）
+                    </label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <input type="hidden" id="tool-editIndex" value="-1">
+                <button class="btn btn-ghost" id="btnCancelTool">取消</button>
+                <button class="btn btn-primary" id="btnSaveTool">保存</button>
+            </div>
+        </div>
+
+        <div class="data-table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th width="50">图标</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th width="70">推荐</th>
+                        <th width="180">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="toolTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="importFileInput" accept=".json" hidden>
+
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
